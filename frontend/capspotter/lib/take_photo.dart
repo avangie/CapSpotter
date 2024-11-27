@@ -32,31 +32,20 @@ class _NextPageState extends State<NextPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Next Page'),
-      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment
+                .center, // Umieszcza elementy wertykalnie w centrum
+            crossAxisAlignment: CrossAxisAlignment
+                .center, // Umieszcza elementy poziomo w centrum
             children: [
               const Text(
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                 style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                width: screenWidth / 2,
-                child: ElevatedButton(
-                  onPressed: () {
-                    _showImageSourceDialog(context);
-                  },
-                  child: const Text('Take a photo or choose from gallery'),
-                ),
+                textAlign: TextAlign.center, // Wyrównanie tekstu do środka
               ),
               const SizedBox(height: 20),
               if (_image != null)
@@ -64,6 +53,12 @@ class _NextPageState extends State<NextPage> {
                   _image!,
                   height: 200,
                 ),
+              ElevatedButton(
+                onPressed: () {
+                  _showImageSourceDialog(context);
+                },
+                child: const Text('Take a photo or choose from gallery'),
+              ),
             ],
           ),
         ),
