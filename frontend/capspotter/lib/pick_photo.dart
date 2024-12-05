@@ -2,32 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-class TakePhotoPage extends StatefulWidget {
+class PickFromGalleryPage extends StatefulWidget {
   @override
-  _NextPageState createState() => _NextPageState();
+  _PickFromGalleryPageState createState() => _PickFromGalleryPageState();
 }
 
-class _NextPageState extends State<TakePhotoPage> {
+class _PickFromGalleryPageState extends State<PickFromGalleryPage> {
   final ImagePicker _picker = ImagePicker();
   File? _image;
 
   @override
   void initState() {
     super.initState();
-    _openCamera();
+    _openGallery();
   }
 
-  Future<void> _openCamera() async {
+  Future<void> _openGallery() async {
     try {
-      final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
-      if (photo != null) {
+      final XFile? galleryImage =
+          await _picker.pickImage(source: ImageSource.gallery);
+      if (galleryImage != null) {
         setState(() {
-          _image = File(photo.path);
+          _image = File(galleryImage.path);
         });
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Wystąpił błąd przy otwieraniu kamery: $e")),
+        SnackBar(content: Text("Wystąpił błąd przy otwieraniu galerii: $e")),
       );
     }
   }
@@ -75,17 +76,17 @@ class _NextPageState extends State<TakePhotoPage> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      '• Upewnij się, że grzyb jest w centrum kadru.',
+                      '• Wybierz zdjęcie, na którym grzyb jest wyraźnie widoczny.',
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                     SizedBox(height: 5),
                     Text(
-                      '• Ważne, aby zdjęcie było wyraźne i dobrze przedstawiało grzyba.',
+                      '• Zadbaj o to, by grzyb był w centrum zdjęcia.',
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                     SizedBox(height: 5),
                     Text(
-                      '• Zadbaj o odpowiednie oświetlenie.',
+                      '• Upewnij się, że zdjęcie jest odpowiednio doświetlone.',
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ],
@@ -123,7 +124,7 @@ class _NextPageState extends State<TakePhotoPage> {
               if (_image == null) const SizedBox(height: 200),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _openCamera,
+                onPressed: _openGallery,
                 style: ElevatedButton.styleFrom(
                   padding:
                       const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -133,13 +134,13 @@ class _NextPageState extends State<TakePhotoPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset(
-                      'assets/camera.png',
+                      'assets/photos.png',
                       height: 24,
                       width: 24,
                     ),
                     const SizedBox(width: 8),
                     const Text(
-                      'Zrób zdjęcie ponownie',
+                      'Wybierz z galerii',
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ],
