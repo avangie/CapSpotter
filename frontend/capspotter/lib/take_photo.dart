@@ -4,18 +4,12 @@ import 'dart:io';
 
 class TakePhotoPage extends StatefulWidget {
   @override
-  _NextPageState createState() => _NextPageState();
+  _TakePhotoPageState createState() => _TakePhotoPageState();
 }
 
-class _NextPageState extends State<TakePhotoPage> {
+class _TakePhotoPageState extends State<TakePhotoPage> {
   final ImagePicker _picker = ImagePicker();
   File? _image;
-
-  @override
-  void initState() {
-    super.initState();
-    _openCamera();
-  }
 
   Future<void> _openCamera() async {
     try {
@@ -119,8 +113,20 @@ class _NextPageState extends State<TakePhotoPage> {
                       ),
                     ),
                   ),
+                )
+              else
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 50),
+                  child: Text(
+                    'Nie dodano zdjęcia',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.grey[600],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              if (_image == null) const SizedBox(height: 200),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _openCamera,
@@ -139,7 +145,7 @@ class _NextPageState extends State<TakePhotoPage> {
                     ),
                     const SizedBox(width: 8),
                     const Text(
-                      'Zrób zdjęcie ponownie',
+                      'Zrób zdjęcie',
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ],
