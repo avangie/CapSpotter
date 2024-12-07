@@ -27,3 +27,11 @@
    git clone https://github.com/twoj-repozytorium/capspotter.git
    cd capspotter
    ```
+2. Zainstaluj zależności Flutter:
+   '''bash
+   flutter pub get
+   '''
+3. Uruchom aplikację na emulatorze lub urządzeniu fizycznym:
+   '''bash
+   flutter run
+   '''
