@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'take_photo.dart';
 import 'pick_photo.dart';
+import 'library.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -157,20 +158,6 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class BrowseSpeciesPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Przeglądaj gatunki'),
-      ),
-      body: const Center(
-        child: Text('Tutaj będzie lista gatunków grzybów'),
       ),
     );
   }
