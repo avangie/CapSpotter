@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'model.dart';
 
 class PickFromGalleryPage extends StatefulWidget {
   @override
@@ -30,7 +31,7 @@ class _PickFromGalleryPageState extends State<PickFromGalleryPage> {
   void _goToNextPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Placeholder()),
+      MaterialPageRoute(builder: (context) => ResultPage()),
     );
   }
 
