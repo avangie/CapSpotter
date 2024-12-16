@@ -2,7 +2,7 @@ name: CapSpotter
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -31,13 +31,14 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   image_picker: ^1.1.2
   camera: ^0.11.0+2
   flutter_launcher_icons: ^0.14.1
+  sqflite: ^2.4.1
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:
@@ -55,7 +56,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -71,6 +71,76 @@ flutter:
     - assets/photos.png
     - assets/book.png
     - assets/appicon.png
+    - assets/mushrooms.db
+
+    - assets/images/Gloeophyllum_sepiarium/
+    - assets/images/Phlebia_tremellosa/
+    - assets/images/Agaricus_augustus/
+    - assets/images/Grifola_frondosa/
+    - assets/images/Phyllotopsis_nidulans/
+    - assets/images/Agaricus_xanthodermus/
+    - assets/images/Gymnopilus_luteofolius/
+    - assets/images/Pleurotus_ostreatus/
+    - assets/images/Amanita_muscaria/
+    - assets/images/Hericium_coralloides/
+    - assets/images/Pleurotus_pulmonarius/
+    - assets/images/Amanita_phalloides/
+    - assets/images/Hericium_erinaceus/
+    - assets/images/Pluteus_cervinus/
+    - assets/images/Amanita_rubescens/
+    - assets/images/Hygrophoropsis_aurantiaca/
+    - assets/images/Psathyrella_candolleana/
+    - assets/images/Armillaria_mellea/
+    - assets/images/Hypholoma_fasciculare/
+    - assets/images/Pseudohydnum_gelatinosum/
+    - assets/images/Armillaria_tabescens/
+    - assets/images/Hypholoma_lateritium/
+    - assets/images/Psilocybe_cyanescens/
+    - assets/images/Artomyces_pyxidatus/
+    - assets/images/Ischnoderma_resinosum/
+    - assets/images/Sarcomyxa_serotina/
+    - assets/images/Bolbitius_titubans/
+    - assets/images/Lacrymaria_lacrymabunda/
+    - assets/images/Schizophyllum_commune/
+    - assets/images/Cerioporus_squamosus/
+    - assets/images/Laetiporus_sulphureus/
+    - assets/images/Stereum_ostrea/
+    - assets/images/Chlorophyllum_brunneum/
+    - assets/images/Leratiomyces_ceres/
+    - assets/images/Stropharia_rugosoannulata/
+    - assets/images/Clitocybe_nuda/
+    - assets/images/Leucoagaricus_americanus/
+    - assets/images/Suillus_americanus/
+    - assets/images/Coprinellus_micaceus/
+    - assets/images/Leucoagaricus_leucothites/
+    - assets/images/Suillus_luteus/
+    - assets/images/Coprinopsis_lagopus/
+    - assets/images/Lycogala_epidendrum/
+    - assets/images/Tapinella_atrotomentosa/
+    - assets/images/Coprinus_comatus/
+    - assets/images/Lycoperdon_perlatum/
+    - assets/images/Trametes_betulina/
+    - assets/images/Crucibulum_laeve/
+    - assets/images/Lycoperdon_pyriforme/
+    - assets/images/Trametes_gibbosa/
+    - assets/images/Daedaleopsis_confragosa/
+    - assets/images/Mycena_haematopus/
+    - assets/images/Trametes_versicolor/
+    - assets/images/Flammulina_velutipes/
+    - assets/images/Panaeolina_foenisecii/
+    - assets/images/Trichaptum_biforme/
+    - assets/images/Galerina_marginata/
+    - assets/images/Panaeolus_cinctulus/
+    - assets/images/Tricholomopsis_rutilans/
+    - assets/images/Ganoderma_applanatum/
+    - assets/images/Panaeolus_papilionaceus/
+    - assets/images/Tubaria_furfuracea/
+    - assets/images/Ganoderma_oregonense/
+    - assets/images/Panellus_stipticus/
+    - assets/images/Tylopilus_felleus/
+    - assets/images/Gliophorus_psittacinus/
+    - assets/images/Phaeolus_schweinitzii/
+    - assets/images/Volvopluteus_gloiocephalus/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
