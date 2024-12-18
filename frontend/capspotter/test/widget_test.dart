@@ -1,30 +1,71 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:CapSpotter/main.dart';
+import 'package:CapSpotter/main.dart'; // Importuj plik główny aplikacji
+import 'package:CapSpotter/take_photo.dart'; // Importuj stronę, którą chcesz testować
+import 'package:CapSpotter/pick_photo.dart'; // Importuj stronę galerii
+import 'package:CapSpotter/library.dart'; // Importuj stronę przeglądania gatunków
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Sprawdzanie widżetów na stronie głównej',
+      (WidgetTester tester) async {
+    // Załaduj aplikację
     await tester.pumpWidget(CapSpotterApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Sprawdzamy, czy na ekranie jest logo
+    expect(find.byType(Image), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Sprawdzamy, czy widoczny jest napis "CapSpotter"
+    expect(find.text('CapSpotter'), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Sprawdzamy, czy istnieje przycisk "Zrób zdjęcie"
+    expect(find.widgetWithText(ElevatedButton, 'Zrób zdjęcie'), findsOneWidget);
+
+    // Sprawdzamy, czy istnieje przycisk "Wybierz zdjęcie z galerii"
+    expect(find.widgetWithText(ElevatedButton, 'Wybierz zdjęcie z galerii'),
+        findsOneWidget);
+
+    // Sprawdzamy, czy istnieje przycisk "Przeglądaj gatunki"
+    expect(find.widgetWithText(ElevatedButton, 'Przeglądaj gatunki'),
+        findsOneWidget);
+  });
+
+  testWidgets('Test nawigacji do strony robienia zdjęcia',
+      (WidgetTester tester) async {
+    // Załaduj aplikację
+    await tester.pumpWidget(CapSpotterApp());
+
+    // Naciśnij przycisk "Zrób zdjęcie"
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Zrób zdjęcie'));
+    await tester.pumpAndSettle(); // Poczekaj na zakończenie nawigacji
+
+    // Sprawdzamy, czy nawigowano do strony TakePhotoPage
+    expect(find.byType(TakePhotoPage), findsOneWidget);
+  });
+
+  testWidgets('Test nawigacji do strony wyboru zdjęcia z galerii',
+      (WidgetTester tester) async {
+    // Załaduj aplikację
+    await tester.pumpWidget(CapSpotterApp());
+
+    // Naciśnij przycisk "Wybierz zdjęcie z galerii"
+    await tester
+        .tap(find.widgetWithText(ElevatedButton, 'Wybierz zdjęcie z galerii'));
+    await tester.pumpAndSettle(); // Poczekaj na zakończenie nawigacji
+
+    // Sprawdzamy, czy nawigowano do strony PickFromGalleryPage
+    expect(find.byType(PickFromGalleryPage), findsOneWidget);
+  });
+
+  testWidgets('Test nawigacji do strony przeglądania gatunków',
+      (WidgetTester tester) async {
+    // Załaduj aplikację
+    await tester.pumpWidget(CapSpotterApp());
+
+    // Naciśnij przycisk "Przeglądaj gatunki"
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Przeglądaj gatunki'));
+    await tester.pumpAndSettle(); // Poczekaj na zakończenie nawigacji
+
+    // Sprawdzamy, czy nawigowano do strony BrowseSpeciesPage
+    expect(find.byType(BrowseSpeciesPage), findsOneWidget);
   });
 }

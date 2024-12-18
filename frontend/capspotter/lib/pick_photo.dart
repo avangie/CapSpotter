@@ -4,6 +4,8 @@ import 'dart:io';
 import 'model.dart';
 
 class PickFromGalleryPage extends StatefulWidget {
+  const PickFromGalleryPage({super.key});
+
   @override
   _PickFromGalleryPageState createState() => _PickFromGalleryPageState();
 }

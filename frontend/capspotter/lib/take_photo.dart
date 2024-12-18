@@ -4,6 +4,8 @@ import 'dart:io';
 import 'model.dart';
 
 class TakePhotoPage extends StatefulWidget {
+  const TakePhotoPage({super.key});
+
   @override
   _TakePhotoPageState createState() => _TakePhotoPageState();
 }

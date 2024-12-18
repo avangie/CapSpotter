@@ -11,10 +11,12 @@ void main() {
       systemNavigationBarColor: Colors.transparent,
     ),
   );
-  runApp(CapSpotterApp());
+  runApp(const CapSpotterApp());
 }
 
 class CapSpotterApp extends StatelessWidget {
+  const CapSpotterApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,12 +25,14 @@ class CapSpotterApp extends StatelessWidget {
         primarySwatch: Colors.lightGreen,
         scaffoldBackgroundColor: const Color.fromRGBO(246, 252, 223, 1),
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,7 +133,7 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => BrowseSpeciesPage()),
+                        builder: (context) => const BrowseSpeciesPage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
