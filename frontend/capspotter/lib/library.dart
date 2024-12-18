@@ -39,6 +39,13 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
     });
   }
 
+  void _sortMushroomsAlphabetically() {
+    setState(() {
+      mushrooms = List.from(mushrooms)
+        ..sort((a, b) => a['name_latin'].compareTo(b['name_latin']));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,11 +91,24 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
                 );
               },
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showFilterDialog(context),
-        backgroundColor: const Color.fromRGBO(133, 159, 61, 1),
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.filter_list),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () => _showFilterDialog(context),
+            backgroundColor: const Color.fromRGBO(133, 159, 61, 1),
+            foregroundColor: Colors.white,
+            child: const Icon(Icons.filter_list),
+          ),
+          const SizedBox(height: 16),
+          FloatingActionButton(
+            onPressed: _sortMushroomsAlphabetically,
+            backgroundColor: const Color.fromRGBO(133, 159, 61, 1),
+            foregroundColor: Colors.white,
+            child: const Icon(Icons.sort_by_alpha),
+          ),
+        ],
       ),
     );
   }
@@ -190,6 +210,10 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
+                ),
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.white,
                 ),
                 items: const [
                   DropdownMenuItem<bool?>(
