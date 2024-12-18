@@ -64,25 +64,29 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
                 return GestureDetector(
                   onTap: () => _showMushroomDetails(context, mushroom),
                   child: Card(
+                    color: const Color.fromRGBO(133, 159, 61, 1),
                     child: Column(
                       children: [
                         Expanded(
                           child: ClipRRect(
                             borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(16.0),
-                              topRight: Radius.circular(16.0),
+                              topLeft: Radius.circular(12.0),
+                              topRight: Radius.circular(12.0),
                             ),
                             child: Image.asset(
                               'assets/images/${mushroom['imagePath1']}',
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fill,
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(4.0),
                           child: Text(
                             mushroom['name_latin'],
                             textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ],
