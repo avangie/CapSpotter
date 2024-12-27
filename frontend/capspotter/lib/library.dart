@@ -9,7 +9,8 @@ class BrowseSpeciesPage extends StatefulWidget {
 }
 
 class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
-  List<Map<String, dynamic>> mushrooms = [];
+  List<Map<String, dynamic>> allMushrooms = [];
+  List<Map<String, dynamic>> filteredMushrooms = [];
   bool? filterEdibility;
 
   @override
@@ -22,7 +23,8 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
     DatabaseHelper dbHelper = DatabaseHelper.instance;
     List<Map<String, dynamic>> data = await dbHelper.getMushrooms();
     setState(() {
-      mushrooms = data;
+      allMushrooms = data;
+      filteredMushrooms = List.from(allMushrooms);
     });
   }
 
@@ -30,26 +32,26 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
     setState(() {
       filterEdibility = edible;
       if (edible != null) {
-        mushrooms = mushrooms.where((mushroom) {
+        filteredMushrooms = allMushrooms.where((mushroom) {
           return mushroom['isEdible'] == (edible ? 1 : 0);
         }).toList();
       } else {
-        _fetchMushrooms();
+        filteredMushrooms = List.from(allMushrooms);
       }
     });
   }
 
   void _sortMushroomsAlphabetically() {
     setState(() {
-      mushrooms = List.from(mushrooms)
-        ..sort((a, b) => a['name_latin'].compareTo(b['name_latin']));
+      filteredMushrooms = List.from(filteredMushrooms)
+        ..sort((a, b) => a['name_polish'].compareTo(b['name_polish']));
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: mushrooms.isEmpty
+      body: filteredMushrooms.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : GridView.builder(
               padding: const EdgeInsets.all(8.0),
@@ -58,9 +60,9 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
                 crossAxisSpacing: 8.0,
                 mainAxisSpacing: 8.0,
               ),
-              itemCount: mushrooms.length,
+              itemCount: filteredMushrooms.length,
               itemBuilder: (context, index) {
-                final mushroom = mushrooms[index];
+                final mushroom = filteredMushrooms[index];
                 return GestureDetector(
                   onTap: () => _showMushroomDetails(context, mushroom),
                   child: Card(
@@ -82,7 +84,7 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
                         Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Text(
-                            mushroom['name_latin'],
+                            mushroom['name_polish'],
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               color: Colors.white,
@@ -101,6 +103,7 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
         children: [
           FloatingActionButton(
             onPressed: () => _showFilterDialog(context),
+            heroTag: 'filterButton',
             backgroundColor: const Color.fromRGBO(133, 159, 61, 1),
             foregroundColor: Colors.white,
             child: const Icon(Icons.filter_list),
@@ -108,6 +111,7 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
           const SizedBox(height: 16),
           FloatingActionButton(
             onPressed: _sortMushroomsAlphabetically,
+            heroTag: 'sortButton',
             backgroundColor: const Color.fromRGBO(133, 159, 61, 1),
             foregroundColor: Colors.white,
             child: const Icon(Icons.sort_by_alpha),
@@ -122,7 +126,8 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(mushroom['name_latin']),
+        backgroundColor: const Color.fromRGBO(246, 252, 223, 1),
+        title: Text(mushroom['name_polish']),
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,18 +149,9 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
               ),
               const SizedBox(height: 16),
               Text(
-                'Nazwa polska: ${mushroom['name_polish'] ?? 'Nieznana nazwa'}',
+                'Nazwa łacińska: ${mushroom['name_latin'] ?? 'Nieznana nazwa'}',
                 style:
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Opis:',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                mushroom['description'] ?? 'Brak opisu',
-                style: const TextStyle(fontSize: 14),
               ),
               const SizedBox(height: 8),
               const Text(
@@ -175,12 +171,25 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
                       : Colors.red,
                 ),
               ),
+              const SizedBox(height: 8),
+              const Text(
+                'Opis:',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                mushroom['description'] ?? 'Brak opisu',
+                style: const TextStyle(fontSize: 14),
+              ),
             ],
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
+            style: TextButton.styleFrom(
+              backgroundColor: const Color.fromRGBO(133, 159, 61, 1),
+              foregroundColor: Colors.white,
+            ),
             child: const Text('Zamknij'),
           ),
         ],

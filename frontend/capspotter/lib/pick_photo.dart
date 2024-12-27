@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:typed_data';
 import 'dart:io';
-import 'model.dart';
+import 'package:image/image.dart' as img;
+import 'package:CapSpotter/model.dart';
 
 class PickFromGalleryPage extends StatefulWidget {
   const PickFromGalleryPage({super.key});
@@ -12,7 +14,7 @@ class PickFromGalleryPage extends StatefulWidget {
 
 class _PickFromGalleryPageState extends State<PickFromGalleryPage> {
   final ImagePicker _picker = ImagePicker();
-  File? _image;
+  img.Image? _image;
 
   Future<void> _openGallery() async {
     try {
@@ -20,7 +22,7 @@ class _PickFromGalleryPageState extends State<PickFromGalleryPage> {
           await _picker.pickImage(source: ImageSource.gallery);
       if (galleryImage != null) {
         setState(() {
-          _image = File(galleryImage.path);
+          _image = img.decodeImage(File(galleryImage.path).readAsBytesSync());
         });
       }
     } catch (e) {
@@ -31,10 +33,14 @@ class _PickFromGalleryPageState extends State<PickFromGalleryPage> {
   }
 
   void _goToNextPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ResultPage()),
-    );
+    if (_image != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultPage(image: _image!),
+        ),
+      );
+    }
   }
 
   @override
@@ -91,31 +97,13 @@ class _PickFromGalleryPageState extends State<PickFromGalleryPage> {
               ),
               const SizedBox(height: 20),
               if (_image != null)
-                Container(
-                  padding: const EdgeInsets.all(1.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 8,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12.0),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: MediaQuery.of(context).size.height * 0.55,
-                        maxWidth: MediaQuery.of(context).size.width * 0.95,
-                      ),
-                      child: Image.file(
-                        _image!,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12.0),
+                  child: Image.memory(
+                    Uint8List.fromList(img.encodeJpg(_image!)),
+                    fit: BoxFit.cover,
+                    height: 300,
+                    width: 300,
                   ),
                 )
               else

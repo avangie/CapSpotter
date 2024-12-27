@@ -1,46 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
+import 'dart:typed_data';
 
 class ResultPage extends StatelessWidget {
+  final img.Image image;
+
+  const ResultPage({super.key, required this.image});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text("Wyniki analizy")),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Wkrótce dostępne!',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(133, 159, 61, 1),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Tutaj będzie działało przesyłanie zdjęcia do modelu AI, który rozpozna gatunek grzyba. Wynik zostanie wyświetlony poniżej.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
-              ),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                  backgroundColor: const Color.fromRGBO(49, 81, 30, 1),
-                ),
-                child: const Text(
-                  'Powrót',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-              ),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.memory(
+              Uint8List.fromList(img.encodeJpg(image)),
+              height: 300,
+              width: 300,
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Tutaj dodaj logikę przetwarzania obrazu i analizy (np. użycie TensorFlow Lite)
+              },
+              child: const Text('Przetwórz obraz'),
+            ),
+          ],
         ),
       ),
     );

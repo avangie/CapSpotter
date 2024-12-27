@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:image/image.dart' as img;
 import 'model.dart';
+import 'dart:typed_data';
 
 class TakePhotoPage extends StatefulWidget {
   const TakePhotoPage({super.key});
@@ -12,14 +14,18 @@ class TakePhotoPage extends StatefulWidget {
 
 class _TakePhotoPageState extends State<TakePhotoPage> {
   final ImagePicker _picker = ImagePicker();
-  File? _image;
+  img.Image? _image;
 
   Future<void> _openCamera() async {
     try {
       final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
       if (photo != null) {
+        final imageFile = File(photo.path);
+        final imageBytes = await imageFile.readAsBytes();
+        final image = img.decodeImage(Uint8List.fromList(imageBytes));
+
         setState(() {
-          _image = File(photo.path);
+          _image = image;
         });
       }
     } catch (e) {
@@ -30,10 +36,14 @@ class _TakePhotoPageState extends State<TakePhotoPage> {
   }
 
   void _goToNextPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ResultPage()),
-    );
+    if (_image != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultPage(image: _image!),
+        ),
+      );
+    }
   }
 
   @override
@@ -110,8 +120,8 @@ class _TakePhotoPageState extends State<TakePhotoPage> {
                         maxHeight: MediaQuery.of(context).size.height * 0.55,
                         maxWidth: MediaQuery.of(context).size.width * 0.95,
                       ),
-                      child: Image.file(
-                        _image!,
+                      child: Image.memory(
+                        Uint8List.fromList(img.encodeJpg(_image!)),
                         fit: BoxFit.cover,
                       ),
                     ),
