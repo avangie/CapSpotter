@@ -87,8 +87,7 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
                             mushroom['name_polish'],
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                              color: Colors.white,
-                            ),
+                                color: Colors.white, fontSize: 12),
                           ),
                         ),
                       ],
@@ -151,12 +150,12 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
               Text(
                 'Nazwa łacińska: ${mushroom['name_latin'] ?? 'Nieznana nazwa'}',
                 style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               const Text(
                 'Toksyczność:',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
               ),
               Text(
                 (mushroom['isEdible'] != null && mushroom['isEdible'] == 1)
@@ -174,7 +173,7 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
               const SizedBox(height: 8),
               const Text(
                 'Opis:',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
               ),
               Text(
                 mushroom['description'] ?? 'Brak opisu',

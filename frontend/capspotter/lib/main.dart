@@ -82,7 +82,7 @@ class HomePage extends StatelessWidget {
                     SizedBox(height: 5),
                     Text(
                       'Zrób zdjęcie',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      style: TextStyle(fontSize: 12, color: Colors.white),
                     ),
                   ],
                 ),
@@ -118,7 +118,7 @@ class HomePage extends StatelessWidget {
                     SizedBox(height: 5),
                     Text(
                       'Wybierz zdjęcie z galerii',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      style: TextStyle(fontSize: 12, color: Colors.white),
                     ),
                   ],
                 ),
@@ -154,7 +154,7 @@ class HomePage extends StatelessWidget {
                     SizedBox(height: 5),
                     Text(
                       'Przeglądaj gatunki',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      style: TextStyle(fontSize: 12, color: Colors.white),
                     ),
                   ],
                 ),
