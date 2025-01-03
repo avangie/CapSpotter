@@ -9,7 +9,6 @@ class ResultPage extends StatelessWidget {
   static const int HEIGHT = 224;
   final img.Image image;
 
-  // Lista klas grzybów
   final List<String> classList = [
     'Agaricus augustus',
     'Agaricus xanthodermus',
@@ -83,12 +82,10 @@ class ResultPage extends StatelessWidget {
 
   ResultPage({super.key, required this.image});
 
-  // Funkcja do przetwarzania obrazu
   Float32List preprocessImage(img.Image image, List<int> inputShape) {
     img.Image resizedImage =
         img.copyResize(image, width: inputShape[1], height: inputShape[2]);
 
-    // Flatten image data and normalize
     List<double> flattenedList = resizedImage.data!
         .expand((pixel) => [
               pixel.r.toDouble() / 255.0,
@@ -100,7 +97,6 @@ class ResultPage extends StatelessWidget {
     return Float32List.fromList(flattenedList);
   }
 
-  // Funkcja do zastosowania softmax na wynikach
   List<double> applySoftmax(List<double> logits) {
     double maxLogit = logits.reduce(max);
     List<double> exps = logits.map((logit) => exp(logit - maxLogit)).toList();
@@ -108,7 +104,7 @@ class ResultPage extends StatelessWidget {
     return exps.map((expVal) => expVal / sumExps).toList();
   }
 
-  // Funkcja do uruchamiania inferencji na modelu
+
   Future<List<double>> runInference(Float32List inputTensor) async {
     try {
       final interpreter = await Interpreter.fromAsset('assets/model.tflite');
@@ -146,7 +142,6 @@ class ResultPage extends StatelessWidget {
                   List<double> result = await runInference(inputTensor);
 
                   if (result.isNotEmpty) {
-                    // Zastosowanie softmax na wynikach
                     List<double> resultProbabilities = applySoftmax(result);
                     List<int> topIndices =
                         List.generate(result.length, (i) => i)
@@ -159,8 +154,6 @@ class ResultPage extends StatelessWidget {
                           "${classList[topIndices[i]]}: ${(resultProbabilities[topIndices[i]] * 100).toStringAsFixed(2)}%");
                     }
 
-                    // Zapisz obraz po przetworzeniu
-                    // await saveImageToFile(image);
                   }
                 } catch (e) {
                   print("Błąd: $e");

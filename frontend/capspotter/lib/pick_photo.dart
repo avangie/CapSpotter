@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 import 'dart:io';
 import 'package:image/image.dart' as img;
-import 'package:CapSpotter/model.dart';
+import 'package:capspotter/model.dart';
 
 class PickFromGalleryPage extends StatefulWidget {
   const PickFromGalleryPage({super.key});

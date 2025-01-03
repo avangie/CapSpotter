@@ -1,4 +1,4 @@
-package com.example.CapSpotter
+package com.example.capspotter
 
 import io.flutter.embedding.android.FlutterActivity
 
