@@ -91,6 +91,12 @@ class _ResultPageState extends State<ResultPage> {
   String resultText = "Przetwarzanie...";
   Widget mushroomInfo = const SizedBox();
   String mushroomPolishName = '';
+  String mushroomImage1Path = '';
+  String mushroomImage2Path = '';
+  String similarMushroom1PolishName = '';
+  String similarMushroom1ImagePath = '';
+  String similarMushroom2PolishName = '';
+  String similarMushroom2ImagePath = '';
 
   @override
   void initState() {
@@ -148,6 +154,8 @@ class _ResultPageState extends State<ResultPage> {
               resultProbabilities[b].compareTo(resultProbabilities[a]));
 
         String topClass = classList[topIndices[0]];
+        String secondClass = classList[topIndices[1]];
+        String thirdClass = classList[topIndices[2]];
 
         setState(() {
           resultText = "Top-3 wyniki:\n";
@@ -157,7 +165,7 @@ class _ResultPageState extends State<ResultPage> {
           }
         });
 
-        await _fetchMushroomInfo(topClass);
+        await _fetchMushroomInfo(topClass, secondClass, thirdClass);
       } else {
         setState(() {
           resultText = "Nie udało się przeanalizować obrazu.";
@@ -170,18 +178,43 @@ class _ResultPageState extends State<ResultPage> {
     }
   }
 
-  Future<void> _fetchMushroomInfo(String topClass) async {
+  Future<void> _fetchMushroomInfo(
+      String topClass, String secondClass, String thirdClass) async {
     try {
       final dbHelper = DatabaseHelper.instance;
       final mushrooms = await dbHelper.getMushrooms();
-      final mushroom = mushrooms.firstWhere(
+
+      final topMushroom = mushrooms.firstWhere(
           (element) => element['name_latin'] == topClass,
           orElse: () => {});
-      print(mushroom);
+      final secondMushroom = mushrooms.firstWhere(
+          (element) => element['name_latin'] == secondClass,
+          orElse: () => {});
+      final thirdMushroom = mushrooms.firstWhere(
+          (element) => element['name_latin'] == thirdClass,
+          orElse: () => {});
 
       setState(() {
-        mushroomPolishName = mushroom.isNotEmpty ? mushroom['name_polish'] : '';
-        mushroomInfo = mushroom.isNotEmpty
+        mushroomPolishName =
+            topMushroom.isNotEmpty ? '${topMushroom['name_polish']}' : '';
+        mushroomImage1Path = topMushroom.isNotEmpty
+            ? 'assets/images/${topMushroom['imagePath1']}'
+            : '';
+        mushroomImage2Path = topMushroom.isNotEmpty
+            ? 'assets/images/${topMushroom['imagePath2']}'
+            : '';
+        similarMushroom1PolishName =
+            secondMushroom.isNotEmpty ? '${secondMushroom['name_polish']}' : '';
+        similarMushroom1ImagePath = secondMushroom.isNotEmpty
+            ? 'assets/images/${secondMushroom['imagePath1']}'
+            : '';
+        similarMushroom2PolishName =
+            thirdMushroom.isNotEmpty ? '${thirdMushroom['name_polish']}' : '';
+        similarMushroom2ImagePath = thirdMushroom.isNotEmpty
+            ? 'assets/images/${thirdMushroom['imagePath1']}'
+            : '';
+
+        mushroomInfo = topMushroom.isNotEmpty
             ? Container(
                 padding: const EdgeInsets.all(16),
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -199,53 +232,42 @@ class _ResultPageState extends State<ResultPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    RichText(
-                      text: TextSpan(
-                        text: "Opis: ",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                        children: [
-                          TextSpan(
-                            text: mushroom['description'],
-                            style:
-                                const TextStyle(fontWeight: FontWeight.normal),
-                          ),
-                        ],
+                    Text(
+                      topMushroom['name_polish'],
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    RichText(
-                      text: TextSpan(
-                        text: "Toksyczność: ",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                        children: [
-                          TextSpan(
-                            text: mushroom['isEdible'] == 1
-                                ? "Jadalny"
-                                : "Toksyczny",
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              color: mushroom['isEdible'] == 1
-                                  ? Colors.green
-                                  : Colors.red,
-                            ),
-                          ),
-                        ],
+                    Text(
+                      "${topMushroom['name_latin']}",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontStyle: FontStyle.italic,
                       ),
                     ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Toksyczność: ${topMushroom['isEdible'] == 0 ? 'Trujący' : 'Jadalny'}",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: topMushroom['isEdible'] == 0
+                            ? Colors.red
+                            : Colors.green,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text("${topMushroom['description']}"),
                   ],
                 ),
               )
-            : const Text(
-                "Brak informacji o wybranym grzybie.",
-                textAlign: TextAlign.center,
-              );
+            : const SizedBox();
       });
     } catch (e) {
       setState(() {
-        mushroomInfo = Text("Błąd podczas pobierania informacji: $e",
-            textAlign: TextAlign.center);
+        resultText = "Błąd przy pobieraniu danych o grzybach.";
       });
     }
   }
@@ -253,29 +275,211 @@ class _ResultPageState extends State<ResultPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Wyniki analizy")),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (mushroomPolishName.isNotEmpty)
-              Text(
-                mushroomPolishName,
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      appBar: AppBar(
+        title: const Text(
+          "Wyniki analizy",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color.fromRGBO(133, 159, 61, 1),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 6,
+                      offset: Offset(2, 2),
+                    ),
+                  ],
+                ),
+                child: const Text(
+                  "UWAGA! Model może się mylić. Wiele grzybów jest trujących, a niektóre są śmiertelnie trujące. Nie zbieraj grzybów na podstawie tylko wyników tej aplikacji!",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-            const SizedBox(height: 20),
-            Image.memory(
-              Uint8List.fromList(img.encodeJpg(widget.image)),
-              height: 300,
-              width: 300,
-            ),
-            const SizedBox(height: 20),
-            Text(resultText, textAlign: TextAlign.center),
-            const SizedBox(height: 20),
-            mushroomInfo,
-            const SizedBox(height: 20),
-          ],
+              const SizedBox(height: 12),
+              if (mushroomPolishName.isNotEmpty)
+                Text(
+                  mushroomPolishName,
+                  style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(133, 159, 61, 1)),
+                ),
+              const SizedBox(height: 18),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 8,
+                      offset: Offset(4, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.memory(
+                    Uint8List.fromList(img.encodeJpg(widget.image)),
+                    height: 250,
+                    width: 260,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              if (mushroomImage1Path.isNotEmpty &&
+                  mushroomImage2Path.isNotEmpty)
+                const Text("Inne zdjęcia tego gatunku"),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (mushroomImage1Path.isNotEmpty)
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 8,
+                            offset: Offset(4, 4),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Image.asset(
+                          mushroomImage1Path,
+                          width: 170,
+                          height: 170,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  const SizedBox(width: 16),
+                  if (mushroomImage2Path.isNotEmpty)
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 8,
+                            offset: Offset(4, 4),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Image.asset(
+                          mushroomImage2Path,
+                          width: 170,
+                          height: 170,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              mushroomInfo,
+              const SizedBox(height: 20),
+              if (similarMushroom1PolishName.isNotEmpty ||
+                  similarMushroom2PolishName.isNotEmpty)
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 56,
+                      vertical: 8), // Add margin around the container
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(133, 159, 61, 1),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 8,
+                        offset: Offset(4, 4), // shadow direction
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Podobne gatunki",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      if (similarMushroom1PolishName.isNotEmpty &&
+                          similarMushroom2PolishName.isNotEmpty)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: Image.asset(
+                                    similarMushroom1ImagePath,
+                                    width: 120,
+                                    height: 120,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(similarMushroom1PolishName,
+                                    style:
+                                        const TextStyle(color: Colors.white)),
+                              ],
+                            ),
+                            const SizedBox(width: 18),
+                            Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: Image.asset(
+                                    similarMushroom2ImagePath,
+                                    width: 120,
+                                    height: 120,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(similarMushroom2PolishName,
+                                    style:
+                                        const TextStyle(color: Colors.white)),
+                              ],
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+                ),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
