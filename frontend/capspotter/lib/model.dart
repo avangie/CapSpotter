@@ -199,7 +199,6 @@ class _ResultPageState extends State<ResultPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 8),
                     RichText(
                       text: TextSpan(
                         text: "Opis: ",
