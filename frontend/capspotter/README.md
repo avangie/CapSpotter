@@ -5,7 +5,7 @@
 ## Funkcjonalności
 
 - **Rozpoznawanie gatunków grzybów**:  
-  Prześlij zdjęcie grzyba, a aplikacja zidentyfikuje jego gatunek dzięki zaawansowanemu modelowi AI.
+  Prześlij zdjęcie grzyba, a aplikacja zidentyfikuje jego gatunek dzięki modelowi AI.
 - **Galeria gatunków**:  
   Przeglądaj zdjęcia i podstawowe informacje, takie jak:
   - Opis
@@ -17,15 +17,15 @@
 ## Technologie
 
 - **Frontend**: Flutter (Dart)
-- **Backend**: Python
-- **Model AI**: Convolutional Neural Network (CNN) przeszkolony na dużym zbiorze zdjęć grzybów z zastosowaniem augmentacji danych.
+- **Operacje dotyczące modelu**: Python
+- **Model**: Convolutional Neural Network (CNN) przeszkolony na dużym zbiorze zdjęć grzybów z zastosowaniem augmentacji danych.
 
 ## Instalacja i uruchomienie
 
 1. Sklonuj repozytorium:
    ```bash
-   git clone https://github.com/twoj-repozytorium/capspotter.git
-   cd capspotter
+   git clone https://github.com/avangie/CapSpotter.git
+   cd frontend/capspotter/
    ```
 2. Zainstaluj zależności Flutter:
    ```bash
