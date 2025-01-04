@@ -291,27 +291,30 @@ class _ResultPageState extends State<ResultPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 6,
-                      offset: Offset(2, 2),
-                    ),
-                  ],
-                ),
-                child: const Text(
-                  "UWAGA! Model może się mylić. Wiele grzybów jest trujących, a niektóre są śmiertelnie trujące. Nie zbieraj grzybów na podstawie tylko wyników tej aplikacji!",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 6,
+                        offset: Offset(2, 2),
+                      ),
+                    ],
                   ),
-                  textAlign: TextAlign.center,
+                  child: const Text(
+                    "UWAGA! Model może się mylić. Wiele grzybów jest trujących, a niektóre są śmiertelnie trujące. Nie zbieraj grzybów na podstawie tylko wyników tej aplikacji!",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -354,47 +357,51 @@ class _ResultPageState extends State<ResultPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (mushroomImage1Path.isNotEmpty)
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 8,
-                            offset: Offset(4, 4),
+                    Flexible(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 8,
+                              offset: Offset(4, 4),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image.asset(
+                            mushroomImage1Path,
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            height: MediaQuery.of(context).size.width * 0.4,
+                            fit: BoxFit.cover,
                           ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          mushroomImage1Path,
-                          width: 170,
-                          height: 170,
-                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
                   const SizedBox(width: 16),
                   if (mushroomImage2Path.isNotEmpty)
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 8,
-                            offset: Offset(4, 4),
+                    Flexible(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 8,
+                              offset: Offset(4, 4),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image.asset(
+                            mushroomImage2Path,
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            height: MediaQuery.of(context).size.width * 0.4,
+                            fit: BoxFit.cover,
                           ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          mushroomImage2Path,
-                          width: 170,
-                          height: 170,
-                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
@@ -406,9 +413,8 @@ class _ResultPageState extends State<ResultPage> {
               if (similarMushroom1PolishName.isNotEmpty ||
                   similarMushroom2PolishName.isNotEmpty)
                 Container(
-                  margin: const EdgeInsets.symmetric(
-                      horizontal: 56,
-                      vertical: 8), // Add margin around the container
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: const Color.fromRGBO(133, 159, 61, 1),
@@ -417,7 +423,7 @@ class _ResultPageState extends State<ResultPage> {
                       BoxShadow(
                         color: Colors.black26,
                         blurRadius: 8,
-                        offset: Offset(4, 4), // shadow direction
+                        offset: Offset(4, 4),
                       ),
                     ],
                   ),
@@ -435,42 +441,82 @@ class _ResultPageState extends State<ResultPage> {
                       if (similarMushroom1PolishName.isNotEmpty &&
                           similarMushroom2PolishName.isNotEmpty)
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Column(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(16),
-                                  child: Image.asset(
-                                    similarMushroom1ImagePath,
-                                    width: 120,
-                                    height: 120,
-                                    fit: BoxFit.cover,
+                            Flexible(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Colors.black26,
+                                          blurRadius: 8,
+                                          offset: Offset(4, 4),
+                                        ),
+                                      ],
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(16),
+                                      child: Image.asset(
+                                        similarMushroom1ImagePath,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.35,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.35,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(similarMushroom1PolishName,
-                                    style:
-                                        const TextStyle(color: Colors.white)),
-                              ],
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    similarMushroom1PolishName,
+                                    style: const TextStyle(color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
                             ),
-                            const SizedBox(width: 18),
-                            Column(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(16),
-                                  child: Image.asset(
-                                    similarMushroom2ImagePath,
-                                    width: 120,
-                                    height: 120,
-                                    fit: BoxFit.cover,
+                            const SizedBox(width: 12),
+                            Flexible(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Colors.black26,
+                                          blurRadius: 8,
+                                          offset: Offset(4, 4),
+                                        ),
+                                      ],
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(16),
+                                      child: Image.asset(
+                                        similarMushroom2ImagePath,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.35,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.35,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(similarMushroom2PolishName,
-                                    style:
-                                        const TextStyle(color: Colors.white)),
-                              ],
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    similarMushroom2PolishName,
+                                    style: const TextStyle(color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
