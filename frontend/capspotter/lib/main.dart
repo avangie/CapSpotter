@@ -61,7 +61,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TakePhotoPage()),
+                    MaterialPageRoute(builder: (context) => const TakePhotoPage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -97,7 +97,7 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => PickFromGalleryPage()),
+                        builder: (context) => const PickFromGalleryPage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
