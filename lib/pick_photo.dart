@@ -102,13 +102,26 @@ class _PickFromGalleryPageState extends State<PickFromGalleryPage> {
                   ),
                   const SizedBox(height: 20),
                   if (_image != null)
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12.0),
-                      child: Image.memory(
-                        Uint8List.fromList(img.encodeJpg(_image!)),
-                        fit: BoxFit.cover,
-                        height: 300,
-                        width: 300,
+                    Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.25),
+                            spreadRadius: 2,
+                            blurRadius: 8,
+                            offset: Offset(4, 4),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: Image.memory(
+                          Uint8List.fromList(img.encodeJpg(_image!)),
+                          fit: BoxFit.cover,
+                          height: 300,
+                          width: 300,
+                        ),
                       ),
                     )
                   else

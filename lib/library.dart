@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
 
+//import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 class BrowseSpeciesPage extends StatefulWidget {
   const BrowseSpeciesPage({super.key});
 
@@ -16,6 +17,7 @@ class _BrowseSpeciesPageState extends State<BrowseSpeciesPage> {
   @override
   void initState() {
     super.initState();
+    //databaseFactory = databaseFactoryFfi;
     _fetchMushrooms();
   }
 

@@ -10,7 +10,7 @@ class ResultPage extends StatefulWidget {
   static const int HEIGHT = 224;
   final img.Image image;
 
-  ResultPage({super.key, required this.image});
+  const ResultPage({super.key, required this.image});
 
   @override
   State<ResultPage> createState() => _ResultPageState();
