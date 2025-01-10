@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import 'package:image/image.dart' as img;
 import 'model.dart';
@@ -17,20 +18,45 @@ class _TakePhotoPageState extends State<TakePhotoPage> {
   img.Image? _image;
 
   Future<void> _openCamera() async {
-    try {
-      final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
-      if (photo != null) {
-        final imageFile = File(photo.path);
-        final imageBytes = await imageFile.readAsBytes();
-        final image = img.decodeImage(Uint8List.fromList(imageBytes));
+    final cameraPermission = await Permission.camera.request();
 
-        setState(() {
-          _image = image;
-        });
+    if (cameraPermission.isGranted) {
+      try {
+        final XFile? photo =
+            await _picker.pickImage(source: ImageSource.camera);
+        if (photo != null) {
+          final imageFile = File(photo.path);
+          final imageBytes = await imageFile.readAsBytes();
+          final image = img.decodeImage(Uint8List.fromList(imageBytes));
+
+          setState(() {
+            _image = image;
+          });
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Wystąpił błąd przy otwieraniu kamery: $e")),
+        );
       }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Wystąpił błąd przy otwieraniu kamery: $e")),
+    } else if (cameraPermission.isDenied ||
+        cameraPermission.isPermanentlyDenied) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Uprawnienia wymagane'),
+            content: const Text(
+              'Aby korzystać z aplikacji w pełni, musisz udzielić zgody na dostęp do kamery. '
+              'Możesz zmienić ustawienia w swoim telefonie.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
       );
     }
   }
@@ -54,7 +80,7 @@ class _TakePhotoPageState extends State<TakePhotoPage> {
           constraints: BoxConstraints(
             minHeight: MediaQuery.of(context)
                 .size
-                .height, // Ensures it fills the screen
+                .height,
           ),
           child: Center(
             child: Padding(
